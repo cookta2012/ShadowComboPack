@@ -1,8 +1,7 @@
 require("defines")
 
-local ontick=defines.events.on_tick
 
-function UpdateSpeeds()
+function UpdateSpeeds(event)
 	for _,f in pairs(game.forces) do
 		if f.technologies["faster-crafting-5"].researched then
 			f.manual_crafting_speed_modifier = 2
@@ -19,16 +18,11 @@ function UpdateSpeeds()
 		end
 		--game.players[1].print(f.name..f.manual_crafting_speed_modifier)
 	end
-	script.on_event(ontick,nil)
 end
 
-script.on_init(UpdateSpeeds)
-script.on_load(UpdateSpeeds)
-
-function ticked()
-	UpdateSpeeds()
-end
-
-script.on_event(defines.events.on_research_finished, function(event)
-	script.on_event(ontick, ticked)
+script.on_event(defines.events.on_tick, function(event)
+UpdateSpeeds(event)
+script.on_event(defines.events.on_tick, nil)
 end)
+
+script.on_event(defines.events.on_research_finished, UpdateSpeeds)
