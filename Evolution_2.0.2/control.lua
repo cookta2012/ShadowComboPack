@@ -3,6 +3,7 @@ local update_com_count = 80
 local agro_area_rad = 40
 local call_back_area_rad = agro_area_rad + 15
 local max_unit_count = 20
+local onload = true
 
 
 script.on_init(function()
@@ -11,18 +12,15 @@ script.on_init(function()
    end
 end)
 
-script.on_load(function()
-   if global.evolution == nil then
-      global.evolution = {}
-   end
-    for i = 1, #game.players, 1 do
-        if game.players[i].force.technologies["Hive-mind"].researched then
-           game.players[i].force.recipes["attractor-on2"].enabled = true
-        end
-    end
-end)
-
 script.on_event(defines.events.on_tick, function(event)
+	if onload then
+		for i = 1, #game.players, 1 do
+			if game.players[i].force.technologies["Hive-mind"].researched then
+			   game.players[i].force.recipes["attractor-on2"].enabled = true
+			end
+		end
+		onload = false
+	end
 	if event.tick % update_com_count == 0 then
 		for index, player in ipairs(game.players) do
 			if player.character then
