@@ -1,7 +1,7 @@
 require "defines"
 require "interfaces"
 
-
+local onload = true
 
 
 local seedTypeLookUpTable = {}
@@ -44,28 +44,6 @@ script.on_event(defines.events.on_player_created, function(event)
     global.tf.playersData[event.player_index].overlayStack = {}
   end
 end)
-
-
-
-script.on_load(function()
-  for _, plantTypes in pairs(global.tf.seedPrototypes) do
-    if plantTypes.efficiency.other == 0 then
-      plantTypes.efficiency.other = 0.01
-    end
-  end
-
-  for seedTypeName, seedPrototype in pairs (global.tf.seedPrototypes) do
-    if game.item_prototypes[seedPrototype.states[1]] == nil then
-      global.tf.seedPrototypes[seedTypeName] = nil
-    end
-  end
-
-  if seedTypeLookUpTable ~= nil then
-    seedTypeLookUpTable = {}
-  end
-  populateSeedTypeLookUpTable()
-end)
-
 
 
 script.on_event(defines.events.on_gui_click, function(event)
@@ -252,6 +230,25 @@ end)
 
 
 script.on_event(defines.events.on_tick, function(event)
+  if onload then
+  for _, plantTypes in pairs(global.tf.seedPrototypes) do
+    if plantTypes.efficiency.other == 0 then
+      plantTypes.efficiency.other = 0.01
+    end
+  end
+
+  for seedTypeName, seedPrototype in pairs (global.tf.seedPrototypes) do
+    if game.item_prototypes[seedPrototype.states[1]] == nil then
+      global.tf.seedPrototypes[seedTypeName] = nil
+    end
+  end
+
+  if seedTypeLookUpTable ~= nil then
+    seedTypeLookUpTable = {}
+  end
+  populateSeedTypeLookUpTable()
+  onload = false
+  end
   while ((global.tf.fieldList[1] ~= nil) and (event.tick >= global.tf.fieldList[1].nextUpdate)) do
     local fieldEnt = global.tf.fieldList[1].entity
     if fieldEnt.valid then
