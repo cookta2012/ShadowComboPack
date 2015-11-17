@@ -1,0 +1,10 @@
+{
+	"name":"GameLib",
+	"version":"0.1.0",
+	"title":"GameLib",
+	"author":"cookta2012",
+	"description":"A lib cookta2012 made",
+	"license":"http://creativecommons.org/licenses/by-nc/4.0/legalcode",
+	"homepage":"",
+	"dependencies":["base >= 0.12.0"]
+}	
