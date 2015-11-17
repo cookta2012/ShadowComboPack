@@ -110,10 +110,11 @@ function On_Remove(event)
 	-- Detect killing a Unit spawner.
 	if event.entity.type == "unit-spawner" then
 	writeDebug("YOU KILLED A SPAWNER")
-		for i = 1, #game.players, 1 do
-			player = game.players[i]
+		local playersOnline = remote.call("GameLib","getPlayersOnline")
+		for i = 1, #playersOnline, 1 do
+			player = playersOnline[i]
 			--player.surface.set_multi_command({type=defines.command.attack,target=player.character,distraction=defines.distraction.by_enemy},(20+math.floor(game.evolution_factor*100/#game.players)))
-			player.surface.set_multi_command{command = {type=defines.command.attack, target=player.character, distraction=defines.distraction.by_enemy},unit_count = (20+math.floor(game.evolution_factor*100/#game.players)), unit_search_distance = 600}
+			player.surface.set_multi_command{command = {type=defines.command.attack, target=player.character, distraction=defines.distraction.by_enemy},unit_count = (20+math.floor(game.evolution_factor*100/#playersOnline)), unit_search_distance = 600}
 		end
 	end
 	
@@ -158,7 +159,6 @@ end
 ---------------------------------------------
 script.on_init(On_Load)
 script.on_load(On_Load)
-
 
 ---------------------------------------------
 --- DeBug Messages 
