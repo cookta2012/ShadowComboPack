@@ -1,4 +1,4 @@
- remote.addinterface("GameLib", {
+ remote.add_interface("GameLib", {
 	getPlayersOnline = function()
      	local tempOnline = {}
 		for i = 1, #game.players, 1 do
